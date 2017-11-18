@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_size_toolbar"
+            android:background="@color/background_toolbar"
+            android:layout_gravity="center">
+        <LinearLayout
+                android:id="@+id/llt_back"
+                android:visibility="gone"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/backview_marginlef_toolbar"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <ImageView
+                    android:id="@+id/back_gdmap_sdk"
+                    android:src="@drawable/back_toobar_mapsdk"
+                    android:layout_gravity="center_vertical"
+                    android:scaleType="centerCrop"
+                    android:layout_width="12dp"
+                    android:layout_height="19dp"/>
+            <TextView
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/text_size_toolbar"
+                    android:text="@string/back_map"
+                    android:textColor="@color/text_blue_toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+        
+        <TextView
+                android:id="@+id/cancle_gdmap_sdk"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/backview_marginlef_toolbar"
+                android:layout_centerVertical="true"
+                android:visibility="visible"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_toolbar"
+                android:text="@string/text_left_toolbar"
+                android:textColor="@color/text_blue_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/title_gdmap_sdk"
+                android:layout_centerInParent="true"
+                android:textSize="@dimen/title_size_toolbar"
+                android:text="@string/text_title_toolbar"
+                android:gravity="center"
+                android:textColor="@color/title_black_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/right_gdmap_sdk"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/backview_marginright_toolbar"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_toolbar"
+                android:textColor="@color/text_blue_toolbar"
+                android:text="@string/text_right_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

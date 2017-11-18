@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">定位组件</string>
+    <string name="text_left_toolbar">取消</string>
+    <string name="text_right_toolbar">确定</string>
+    <string name="text_title_toolbar">标题</string>
+    <string name="no_result">对不起,没有搜索到相关数据</string>
+    <string name="search_fail">查询失败</string>
+    <string name="set_position">设置签到位置</string>
+    <string name="current_location">[当前]</string>
+    <string name="title_poi">title</string>
+    <string name="address_poi">address</string>
+    <string name="no_locate_data">基准位置未设定!</string>
+    <string name="my_location">我的位置</string>
+    <string name="within_area">\t(在范围内)</string>
+    <string name="without_area">\t(不在范围内)</string>
+    <string name="your_location">您当前的位置</string>
+    <string name="in_sign_area">已进入签到范围</string>
+    <string name="out_sign_area">未进入签到范围</string>
+    <string name="back_map">返回</string>
+    <string name="your_position">您当前的位置</string>
+    <string name="target_postion">目标点的位置</string>
+    <string name="map_msg_location">位置服务</string>
+    <string name="map_msg_storage">存储空间</string>
+    <string name="locate_fail">定位失败,请重试</string>
+    <string name="map_search">搜索</string>
+    <string name="no_data">没有数据!</string>
+    <string name="relocate">重新定位</string>
+    <string name="tencent">腾讯地图</string>
+    <string name="minimap">高德地图</string>
+    <string name="baidu">百度地图</string>
+    <string name="no_location">经纬度不可为空</string>
+    <string name="no_location_app">未检测到导航应用</string>
+    <string name="target_name">目的地</string>
+</resources>

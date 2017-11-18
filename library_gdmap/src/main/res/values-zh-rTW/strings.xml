@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">定位組件</string>
+    <string name="text_left_toolbar">取消</string>
+    <string name="text_right_toolbar">确定</string>
+    <string name="text_title_toolbar">標題</string>
+    <string name="no_result">對不起,沒有搜索到相關數據</string>
+    <string name="search_fail">查詢失敗</string>
+    <string name="set_position">設置簽到位置</string>
+    <string name="current_location">[當前]</string>
+    <string name="title_poi">title</string>
+    <string name="address_poi">address</string>
+    <string name="no_locate_data">基準位置未設定!</string>
+    <string name="my_location">我的位置</string>
+    <string name="within_area">\t(在範圍內)</string>
+    <string name="without_area">\t(不在範圍內)</string>
+    <string name="your_location">您當前的位置</string>
+    <string name="in_sign_area">已進入簽到範圍</string>
+    <string name="out_sign_area">未進入簽到範圍</string>
+    <string name="back_map">返回</string>
+    <string name="your_position">您當前的位置</string>
+    <string name="target_postion">目標點的位置</string>
+    <string name="map_msg_location">位置服務</string>
+    <string name="map_msg_storage">存儲空間</string>
+    <string name="locate_fail">定位失敗,請重試</string>
+</resources>

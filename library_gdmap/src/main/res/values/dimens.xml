@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="backview_marginlef_toolbar">14dp</dimen>
+    <dimen name="backview_marginright_toolbar">14dp</dimen>
+    <dimen name="text_size_toolbar">15sp</dimen>
+    <dimen name="title_size_toolbar">17sp</dimen>
+    <dimen name="height_size_toolbar">48dp</dimen>
+    <dimen name="height_map_view">374dp</dimen>
+    <dimen name="radius_relocate">10dp</dimen>
+    <dimen name="width_relocate">87dp</dimen>
+    <dimen name="height_relocate">28dp</dimen>
+    <dimen name="textsize_relocate">12sp</dimen>
+</resources>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+        <TextView
+                android:textSize="17sp"
+                android:text="地图demo"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+            <TextView
+                    android:text="高德地图demo"
+                    android:textSize="17sp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:text="本工具包使用高德sdk开发"
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+            android:id="@+id/rlr_locate"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+        <TextView
+                android:text="设置页面"
+                android:textSize="15dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <ImageView
+                android:layout_marginRight="2dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/go_gdmap"
+                android:layout_width="15dp"
+                android:layout_height="25dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/rlt_sign"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+        <TextView
+                android:text="签到页面"
+                android:textSize="15dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <ImageView
+                android:layout_marginRight="2dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/go_gdmap"
+                android:layout_width="15dp"
+                android:layout_height="25dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/rlt_use"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+        <TextView
+                android:text="调起第三方导航应用"
+                android:textSize="15dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <ImageView
+                android:layout_marginRight="2dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/go_gdmap"
+                android:layout_width="15dp"
+                android:layout_height="25dp"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_map_view">
+
+            <com.amap.api.maps.MapView
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+            </com.amap.api.maps.MapView>
+
+            <LinearLayout
+                    android:id="@+id/llt_relocate"
+                    android:layout_width="@dimen/width_relocate"
+                    android:layout_height="@dimen/height_relocate"
+                    android:background="@drawable/shape_relocate_map"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="2dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                <LinearLayout
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:id="@+id/location_image"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:src="@drawable/img_relocation"
+                            android:layout_gravity="center"/>
+                    <TextView
+                            android:text="重新定位"
+                            android:layout_gravity="center"
+                            android:textSize="@dimen/textsize_relocate"
+                            android:layout_marginRight="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </RelativeLayout>
+        <ListView
+                android:id="@+id/listview_poi"
+                android:background="@color/map_fff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+        </ListView>
+    </LinearLayout>
+
+
+</LinearLayout>

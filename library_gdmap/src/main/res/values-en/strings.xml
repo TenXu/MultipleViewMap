@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">library_gdmap</string>
+    <string name="text_left_toolbar">Quit</string>
+    <string name="text_right_toolbar">Confirm</string>
+    <string name="text_title_toolbar">Title</string>
+    <string name="no_result">No data</string>
+    <string name="search_fail">Fail to query</string>
+    <string name="set_position">Set sign position</string>
+    <string name="current_location">[Current]</string>
+    <string name="title_poi">Title</string>
+    <string name="address_poi">Address</string>
+    <string name="no_locate_data">No target position </string>
+    <string name="my_location">My postion</string>
+    <string name="within_area">\t(Within Area)</string>
+    <string name="without_area">\t(Beyond Area)</string>
+    <string name="your_location">Your postion</string>
+    <string name="in_sign_area">Wthin setted position</string>
+    <string name="out_sign_area">Beyond setted position</string>
+    <string name="back_map">Back</string>
+    <string name="your_position">Current position</string>
+    <string name="target_postion">Target position</string>
+    <string name="map_msg_location">Location service</string>
+    <string name="map_msg_storage">Storage</string>
+    <string name="locate_fail">fail to locate, try again</string>
+</resources>

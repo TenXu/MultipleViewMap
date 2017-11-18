@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">地图组件</string>
+    <string name="action_settings">Settings</string>
+    <string name="admin_map">管理员页面</string>
+    <string name="locate_map">考勤页面</string>
+    <string name="check_map">检查是否在范围内</string>
+</resources>
