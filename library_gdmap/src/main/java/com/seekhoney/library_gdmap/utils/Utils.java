@@ -170,6 +170,7 @@ public class Utils {
 					popupWindow.dismiss();
 			}
 		});
+		popupWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
 		popupWindow.showAtLocation(activity.getWindow().getDecorView(), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
 		setBackgroundAlpha(activity,0.5f);
 		tvQuit.setOnClickListener(new View.OnClickListener() {
