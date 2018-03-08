@@ -21,6 +21,12 @@
                 android:name=".ui.GdmapTestLocateActivity">
 
         </activity>
+        <activity android:name=".ui.GdmapActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                  android:screenOrientation="portrait"
+        >
+
+        </activity>
 
         <service android:name="com.amap.api.location.APSService"></service>
 

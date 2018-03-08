@@ -8,16 +8,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.amap.api.fence.GeoFence;
 import com.amap.api.fence.GeoFenceClient;
 import com.amap.api.fence.GeoFenceListener;
 import com.amap.api.location.DPoint;
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.*;
@@ -30,12 +29,9 @@ import com.seekhoney.library_gdmap.component.DaggerCommonComponent;
 import com.seekhoney.library_gdmap.constant.Const;
 import com.seekhoney.library_gdmap.constant.TestConst;
 import com.seekhoney.library_gdmap.listener.OnImgLoadFinish;
-import com.seekhoney.library_gdmap.listener.OnLocationGetListener;
 import com.seekhoney.library_gdmap.logic.LocateLogic;
-import com.seekhoney.library_gdmap.model.PositionEntity;
 import com.seekhoney.library_gdmap.module.CommonModule;
-import com.seekhoney.library_gdmap.task.LocationTask;
-import com.seekhoney.library_gdmap.task.RegeocodeTask;
+import com.seekhoney.library_gdmap.mvp.ILocateView;
 import com.seekhoney.library_gdmap.utils.LogUtil;
 import com.seekhoney.library_gdmap.utils.Utils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -50,8 +46,16 @@ import java.util.List;
  */
 
 public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChangeListener,
-        AMap.OnMapLoadedListener, OnLocationGetListener, View.OnClickListener, GeoFenceListener {
+        AMap.OnMapLoadedListener,GeoFenceListener , ILocateView {
 
+    @BindView(R2.id.cancle_gdmap_sdk)
+    TextView tv_cancle;
+    @BindView(R2.id.title_gdmap_sdk)
+    TextView tv_title;  //标题
+    @BindView(R2.id.right_gdmap_sdk)
+    TextView tv_sure;   //确定
+    @BindView(R2.id.llt_back)
+    LinearLayout llt_back; //返回图标
     @BindView(R2.id.map)
     MapView mMapView;   //地图view
     @BindView(R2.id.listview_poi)
@@ -64,18 +68,6 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
     private Marker mPositionMark;          //定位的那个点
 
     private LatLng mStartPosition;         //存储经纬度坐标值的类
-
-    private RegeocodeTask mRegeocodeTask;  //封装的逆地理编码类
-
-    private LocationTask mLocationTask;   //封装的定位类
-
-    private ImageView mLocationImage;
-
-    private LinearLayout llt_relocate;
-
-
-    //第一次进入时在onLocationGet回调中添加围栏,其他都在onGeoFenceCreateFinished中添加
-    private boolean mIsFirst = true;
 
     // 地理围栏客户端
     private GeoFenceClient fenceClient = null;
@@ -93,10 +85,6 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
     private PoiItem poiItem;//选择的兴趣点
 
     List<GeoFence> fenceList = new ArrayList<GeoFence>();
-
-    private String TAG = "GDMAP";
-
-    private LogUtil logUtil = LogUtil.getIns(TAG);
 
     /**
      * logo ,imgHead,roundedBitmapDrawable:
@@ -147,15 +135,23 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
         DaggerCommonComponent.builder().
                 commonModule(new CommonModule(this)).
                 build().inject(this);
-        logUtil.setShow(true);
         ins = this;
         init(savedInstanceState);
         intData();
-        hideBack();
-        showSureCancel();
-        mLocationTask = new LocationTask(getApplicationContext());
-        mLocationTask.setOnLocationGetListener(this);
-        mRegeocodeTask = new RegeocodeTask(getApplicationContext());
+    }
+
+    @OnClick({R2.id.cancle_gdmap_sdk,R2.id.right_gdmap_sdk,R2.id.llt_back,R2.id.llt_relocate})
+    public void onViewClick(View v){
+        int id = v.getId();
+        if(id == R.id.cancle_gdmap_sdk){
+            setCancle();
+        }else if(id == R.id.right_gdmap_sdk){
+            setSure();
+        }else if(id == R.id.llt_back){
+            setBack();
+        }else if(id == R.id.llt_relocate){
+            gdpresenter.singleLocate(radius);
+        }
     }
 
     @Override
@@ -181,7 +177,6 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
         super.onDestroy();
         Utils.removeMarkers();
         mMapView.onDestroy();
-        mLocationTask.onDestroy();
         if (null != fenceClient) {
             fenceClient.removeGeoFence();
         }
@@ -190,16 +185,6 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
     @Override
     public int getContentView() {
         return R.layout.activity_admin;
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        int id = v.getId();
-        if (id == R.id.llt_relocate) {
-            mLocationTask.startSingleLocate();
-            logUtil.e("onClick-startSingleLocate");
-        }
     }
 
     //取消
@@ -243,7 +228,6 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
             msg.what = 1;
         }
         mHandler.sendMessage(msg);
-        logUtil.e("onGeoFenceCreateFinished-" + "围栏添加完毕");
 
     }
 
@@ -266,14 +250,9 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
 
-//        LatLng exactPostion = cameraPosition.target;
         mStartPosition = cameraPosition.target;
-        mRegeocodeTask.setOnLocationGetListener(this);
-        mRegeocodeTask
-                .search(mStartPosition.latitude, mStartPosition.longitude,50); //逆向地理编码
         //增加围栏
         addRoundFence();
-        logUtil.e("onCameraChangeFinish-" + "地图状态改变完成");
 
     }
 
@@ -284,63 +263,8 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
     public void onMapLoaded() {
 
         setCenterMaker(null,0,primaryUrl);  //为了加载图标,必须在这里加载,否则加载不出来
-        mLocationTask.startSingleLocate();      //开启单次定位
-        logUtil.e("onMapLoaded-" + "地图加载完成");
-
-    }
-
-    /**
-     * LocationTask中定位完成后调用了此方法
-     */
-    @Override
-    public void onLocationGet(PositionEntity entity) {
-
-        if (mIsFirst && location != null) {
-                mStartPosition = new LatLng(location.getLatitude(), location.getLongitude());
-//            addRoundFence();
-            mIsFirst = false;
-
-        }else {
-            mStartPosition = new LatLng(entity.latitue, entity.longitude);
-        }
-
-
-        CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(
-                mStartPosition, mAmap.getCameraPosition().zoom);
-        mAmap.animateCamera(cameraUpate); //动画的方式更新地图状态
-
-
-        logUtil.e("onLocationGet-" + "定位完成"+"--mStartPosition="+mStartPosition.toString());
-    }
-
-
-    /**
-     * OnLocationGetListener 接口的回调,返回值不能满足需求,废弃
-     */
-    @Override
-    public void onRegecodeGet(PositionEntity entity) {
-
-    }
-
-
-    @Override
-    public void onRegecodeCallback(List<PoiItem> poiItems) {
-
-
-//        for(int i = 0; i< poiItems.size(); i++){
-//            LatLonPoint point = poiItems.get(i).getLatLonPoint();
-//            String address = poiItems.get(i).getSnippet();
-//            String title = poiItems.get(i).getTitle();
-//
-//        }
-        this.poiItems = poiItems;
-        if (poiItems != null && poiItems.size() > 0) {
-            poiItemAdapter.setItems(poiItems);
-            poiItemAdapter.setSelectedPosition(0);
-            poiItemAdapter.notifyDataSetChanged();
-            listView.setSelection(0);
-            poiItem = poiItems.get(0);
-        }
+        gdpresenter.singleLocate(radius);
+        LogUtil.getIns("定位").i("地图加载完成");
 
 
     }
@@ -441,7 +365,6 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
         imgHead = (ImageView) logo.findViewById(R.id.head_setmap);
         if(roundedBitmapDrawable != null){
             imgHead.setImageDrawable(roundedBitmapDrawable);
-            Log.e("load","center-2:"+"imgHead="+imgHead+"--roundedBitmapDrawable="+roundedBitmapDrawable);
         }
         if(latLng != null){
 
@@ -453,8 +376,6 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
             @Override
             public void loadFinish(RoundedBitmapDrawable drawable) {
                 GdmapActivity.this.roundedBitmapDrawable = drawable;
-                Log.e("load","center-1:"+"roundedBitmapDrawable="+drawable);
-//                addCenterMark();
                 mHandler.sendEmptyMessage(Const.LOAD_IMG);
             }
 
@@ -484,28 +405,18 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
 
     private void init(Bundle savedInstanceState) {
 
-//        mMapView = (MapView) findViewById(R.id.map);
-        llt_relocate = (LinearLayout) findViewById(R.id.llt_relocate);
-        llt_relocate.setOnClickListener(this);
+        mMapView = (MapView) findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
         mAmap = mMapView.getMap();
         mAmap.getUiSettings().setZoomControlsEnabled(false); //缩放控件不显示
-//        mAmap.getUiSettings().setRotateGesturesEnabled(false); //禁用旋转手势,与iOS一致
         mAmap.setOnMapLoadedListener(this);  //地图加载完成
         mAmap.setOnCameraChangeListener(this); //地图状态发送变化
-//        mAmap.setMinZoomLevel(15f); //设置地图最小缩放
         mAmap.moveCamera(CameraUpdateFactory.zoomBy(5));
 
-        mLocationImage = (ImageView) findViewById(R.id.location_image);
-        mLocationImage.setOnClickListener(this);
         // 初始化地理围栏
         fenceClient = new GeoFenceClient(getApplicationContext());
-
-//        listView = (ListView) findViewById(R.id.listview_poi);
-
         poiItemAdapter = new PoiItemAdapter(GdmapActivity.this, poiItems);
 
-        listView.setAdapter(poiItemAdapter);
         /**
          * 创建pendingIntent
          */
@@ -515,6 +426,7 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
          */
         fenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN);
 
+        listView.setAdapter(poiItemAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -541,15 +453,7 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
         try{
             radius = Float.parseFloat(r);
         }catch (Exception e){
-            logUtil.e(e.toString());
         }
-
-        if(title != null){
-            setBarTitle(title);
-        }else{
-            setBarTitle(getString(R.string.set_position));
-        }
-
 
     }
 
@@ -568,18 +472,8 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
         DPoint centerPoint = new DPoint(mStartPosition.latitude,
                 mStartPosition.longitude);
         fenceClient.addGeoFence(centerPoint, radius, customId);
-        logUtil.i("addRoundFence-" + "添加圆radius="+radius);
     }
 
-    /**
-     * 更新地图状态
-     */
-
-    private void refreshMapStatue(LatLng latLng) {
-        CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(
-                latLng, mAmap.getCameraPosition().zoom);
-        mAmap.animateCamera(cameraUpate); //动画的方式更新地图状态
-    }
 
     @Override
     public void showLoading() {
@@ -589,6 +483,25 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnCameraChange
     @Override
     public void hideLoading() {
 
+    }
+
+    @Override
+    public void notifyChanged(List<PoiItem> poiItems) {
+
+        this.poiItems = poiItems;
+        if (poiItems != null && poiItems.size() > 0) {
+            poiItemAdapter.setItems(poiItems);
+            poiItemAdapter.setSelectedPosition(0);
+            poiItemAdapter.notifyDataSetChanged();
+            listView.setSelection(0);
+            poiItem = poiItems.get(0);
+        }
+
+    }
+
+    @Override
+    public MapView getMapView() {
+        return mMapView;
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.seekhoney.library_gdmap.module;
 
 import android.app.Application;
-import com.seekhoney.library_gdmap.mvp.IView;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.seekhoney.library_gdmap.mvp.ILocateView;
 import com.seekhoney.library_gdmap.rxError.ResponseErrorListener;
 import com.seekhoney.library_gdmap.rxError.RxErrorHandler;
 import com.seekhoney.library_gdmap.scope.ActivityScope;
@@ -18,15 +20,15 @@ import dagger.Provides;
 @Module
 public class CommonModule
 {
-    private IView view;
+    private ILocateView view;
 
-    public CommonModule(IView view){
+    public CommonModule(ILocateView view){
         this.view = view;
     }
 
     @ActivityScope
     @Provides
-    public IView provideIView(){
+    public ILocateView provideIView(){
         return this.view;
     }
 
@@ -40,6 +42,18 @@ public class CommonModule
     @Provides
     public RxPermissions provideRxPermission(){
         return new RxPermissions(view.getActivity());
+    }
+
+    @ActivityScope
+    @Provides
+    public AMapLocationClient provideAMapLocationClient(){
+        return new AMapLocationClient(view.getActivity());
+    }
+
+    @ActivityScope
+    @Provides
+    public GeocodeSearch provideGeocodeSearch(){
+        return new GeocodeSearch(view.getActivity());
     }
 
     //此处编译不能通过, 待理解了继续写

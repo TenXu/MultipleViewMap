@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class LogUtil
 {
-    private boolean isShow;
+    private boolean isShow = true;
     private static LogUtil ins;
     private String tag;
 

@@ -10,7 +10,7 @@ import com.seekhoney.library_gdmap.listener.OnLocationCommonListener;
 import com.seekhoney.library_gdmap.listener.OnSelectedPoiListener;
 import com.seekhoney.library_gdmap.model.PositionEntity;
 import com.seekhoney.library_gdmap.task.LocationTask;
-import com.seekhoney.library_gdmap.ui.GdmapAdminActivity;
+import com.seekhoney.library_gdmap.ui.GdmapActivity;
 import com.seekhoney.library_gdmap.ui.GdmapTestLocateActivity;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class MapHelper
 
         LocateLogic.getIns(mContext).setSelectedPoiListener(listener);
 
-        Intent intent = new Intent(mContext, GdmapAdminActivity.class);
+        Intent intent = new Intent(mContext, GdmapActivity.class);
         intent.putExtra("location",location);
         intent.putExtra("url",url);
         intent.putExtra("title",title);
