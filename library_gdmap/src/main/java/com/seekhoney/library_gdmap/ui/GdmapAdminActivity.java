@@ -123,13 +123,6 @@ public class GdmapAdminActivity extends BaseActivity implements AMap.OnCameraCha
                             "添加围栏失败 " + errorCode, Toast.LENGTH_SHORT).show();
                     break;
                 case Const.LOAD_IMG:
-//                    String testUrl = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1496937205736&di=3235734c2d1615baf516c0c1cc16a565&imgtype=0&src=http%3A%2F%2Fimg.tupianzj.com%2Fuploads%2Fallimg%2F140506%2F1-140506160035.jpg";
-//                    if(logo != null){
-//                        ImageView imgHead = (ImageView) logo.findViewById(R.id.head_setmap);
-//                        imgHead.setImageResource(R.drawable.head_default);
-//                        Utils.load(GdmapAdminActivity.this, testUrl, imgHead);
-//                        Log.e("MAP","加载图片");
-//                    }
                     break;
                 default:
                     break;
@@ -146,7 +139,6 @@ public class GdmapAdminActivity extends BaseActivity implements AMap.OnCameraCha
         intData();
         hideBack();
         showSureCancel();
-//        mLocationTask = LocationTask.getInstance(getApplicationContext());//修改为非单例
         mLocationTask = new LocationTask(getApplicationContext());
         mLocationTask.setOnLocationGetListener(this);
         mRegeocodeTask = new RegeocodeTask(getApplicationContext());
@@ -255,7 +247,6 @@ public class GdmapAdminActivity extends BaseActivity implements AMap.OnCameraCha
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
 
-//        LatLng exactPostion = cameraPosition.target;
         mStartPosition = cameraPosition.target;
         mRegeocodeTask.setOnLocationGetListener(this);
         mRegeocodeTask
@@ -286,7 +277,6 @@ public class GdmapAdminActivity extends BaseActivity implements AMap.OnCameraCha
 
         if (mIsFirst && location != null) {
                 mStartPosition = new LatLng(location.getLatitude(), location.getLongitude());
-//            addRoundFence();
             mIsFirst = false;
 
         }else {
@@ -314,14 +304,6 @@ public class GdmapAdminActivity extends BaseActivity implements AMap.OnCameraCha
 
     @Override
     public void onRegecodeCallback(List<PoiItem> poiItems) {
-
-
-//        for(int i = 0; i< poiItems.size(); i++){
-//            LatLonPoint point = poiItems.get(i).getLatLonPoint();
-//            String address = poiItems.get(i).getSnippet();
-//            String title = poiItems.get(i).getTitle();
-//
-//        }
         this.poiItems = poiItems;
         if (poiItems != null && poiItems.size() > 0) {
             poiItemAdapter.setItems(poiItems);
@@ -387,11 +369,6 @@ public class GdmapAdminActivity extends BaseActivity implements AMap.OnCameraCha
         mAmap.clear(true);
         //重新绘制图中心的标记,也就是当前定位的位置
         setCenterMaker(center,radius,primaryUrl);
-        // 绘制一个圆形
-//        mAmap.addCircle(new CircleOptions().center(center)
-//                .radius(fence.getRadius()).strokeColor(Const.STROKE_COLOR)
-//                .fillColor(Const.FILL_COLOR).strokeWidth(Const.STROKE_WIDTH));
-//        boundsBuilder.include(center);
     }
 
     private void addCircle(LatLng lat, float radius){
@@ -425,24 +402,6 @@ public class GdmapAdminActivity extends BaseActivity implements AMap.OnCameraCha
         }
     }
 
-//    /**
-//     * 设置地图中心的标记,也是定位的当前位置
-//     * */
-//    private void setCenterMaker(){
-//
-//        MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.setFlat(true);
-//        markerOptions.anchor(0.5f, 0.5f);
-//        markerOptions.position(new LatLng(0, 0));
-//        markerOptions
-//                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-//                        .decodeResource(getResources(),
-//                                R.drawable.icon_loaction_start)));
-//        mPositionMark = mAmap.addMarker(markerOptions);
-//
-//        mPositionMark.setPositionByPixels(mMapView.getWidth() / 2,
-//                mMapView.getHeight() / 2);
-//    }
 
     /**
      * 设置地图中心的标记,也是定位的当前位置

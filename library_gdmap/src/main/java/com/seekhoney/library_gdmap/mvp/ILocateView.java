@@ -1,6 +1,8 @@
 package com.seekhoney.library_gdmap.mvp;
 
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.services.core.PoiItem;
 
 import java.util.List;
@@ -12,5 +14,11 @@ import java.util.List;
 public interface ILocateView extends IView
 {
     void notifyChanged(List<PoiItem> list);
+
+    void setCenterMark(LatLng latLng ,float radius);
+
     MapView getMapView();
+
+    LatLngBounds.Builder getBounds();
+
 }
