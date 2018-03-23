@@ -24,7 +24,7 @@ public class SelectPresenter
 
         SharedPreferences sp = view.getActivity().getSharedPreferences(Const.SP_SELECT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        
+
 
     }
 
