@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:theme="@style/Base.Theme.AppCompat.Light"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+        <android.support.constraint.ConstraintLayout
+                app:layout_scrollFlags="scroll|enterAlways"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <RelativeLayout
+                    android:id="@+id/rlt_search"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="14dp"
+                    android:background="@drawable/shadow_map_yxtsdk"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="288dp"
+                    android:layout_height="30dp">
+                <ImageView
+                        android:id="@+id/img_search"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="7dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/search_map_yxtsdk"/>
+
+                <AutoCompleteTextView
+                        android:id="@+id/edit_search"
+                        android:background="@color/map_fff"
+                        android:textSize="15sp"
+                        android:layout_toRightOf="@+id/img_search"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toLeftOf="@+id/delete_search"
+                        android:hint="@string/map_search"
+                        android:singleLine="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                <ImageView
+
+                        android:id="@+id/delete_search"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="7dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/delete_map_yxtsdk"
+                        android:scaleType="centerCrop"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"/>
+
+            </RelativeLayout>
+            <TextView
+                    android:id="@+id/tv_quit_search"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@string/text_left_toolbar"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_blue_toolbar"
+                    app:layout_constraintLeft_toRightOf="@+id/rlt_search"
+                    android:layout_marginLeft="14dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/rec_select"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -4,6 +4,7 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.services.core.PoiItem;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
 
 public interface ILocateView extends IView
 {
+    RxPermissions getRxPermission();
+
     void notifyChanged(List<PoiItem> list);
 
     void setCenterMark(LatLng latLng ,float radius);

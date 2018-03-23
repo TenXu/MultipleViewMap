@@ -62,9 +62,4 @@ public abstract class GdBaseActivity extends AppCompatActivity
 
 
 
-    protected abstract void setCancle();
-
-    protected abstract void setSure();
-
-    protected abstract void setBack();
 }

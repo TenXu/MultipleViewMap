@@ -53,4 +53,7 @@ public class Const {
 	public static final int READ_CONTACTS = 0xE9;
 	public static final int GET_LOCATIONS = 0xE7;
 	public static final int READ_STORAGE = 0xE8;
+
+	public static final String SP_SELECT = "SP_SELECT";
+
 }

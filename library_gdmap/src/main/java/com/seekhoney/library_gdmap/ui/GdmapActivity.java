@@ -26,6 +26,7 @@ import com.seekhoney.library_gdmap.logic.LocateLogic;
 import com.seekhoney.library_gdmap.module.CommonModule;
 import com.seekhoney.library_gdmap.mvp.ILocateView;
 import com.seekhoney.library_gdmap.utils.LogUtil;
+import com.seekhoney.library_gdmap.utils.PermisionUtil;
 import com.seekhoney.library_gdmap.utils.Utils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -51,6 +52,9 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
     MapView mMapView;   //地图view
     @BindView(R2.id.listview_poi)
     ListView listView;
+    @BindView(R2.id.rlt_jump)
+    RelativeLayout rlt_jump;
+
     @Inject
     RxPermissions rxPermissions;
     @Inject
@@ -76,13 +80,14 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerCommonComponent.builder().
-                commonModule(new CommonModule(this)).
-                build().inject(this);
+                commonModule(new CommonModule(this)).  //commonModule中所有provide的变量都已经生成了Factory
+                build().                //初始化, 已经生成的Factory都生成对应的provider对象
+                inject(this);   //Activity中的Inject标记的对象被赋值
         init(savedInstanceState);
         intData();
     }
 
-    @OnClick({R2.id.cancle_gdmap_sdk,R2.id.right_gdmap_sdk,R2.id.llt_back,R2.id.llt_relocate})
+    @OnClick({R2.id.cancle_gdmap_sdk,R2.id.right_gdmap_sdk,R2.id.llt_back,R2.id.llt_relocate,R2.id.rlt_jump})
     public void onViewClick(View v){
         int id = v.getId();
         if(id == R.id.cancle_gdmap_sdk){
@@ -90,9 +95,28 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
         }else if(id == R.id.right_gdmap_sdk){
             setSure();
         }else if(id == R.id.llt_back){
-            setBack();
+
         }else if(id == R.id.llt_relocate){
-            gdpresenter.singleLocate(radius);
+
+            gdpresenter.requestLocationPermission(new PermisionUtil.RequestPermisionResult() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    gdpresenter.singleLocate(radius);
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+
+                }
+
+                @Override
+                public void onRequestPermissionFailureNeverAsk(List<String> permissions) {
+                    GdmapActivity.this.finish();
+                }
+            });
+
+        }else if(id == R.id.rlt_jump){
+
         }
     }
 
@@ -126,30 +150,6 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
         return R.layout.activity_admin;
     }
 
-    //取消
-
-    @Override
-    protected void setCancle() {
-        finish();
-    }
-
-    //设置
-
-
-    @Override
-    protected void setSure() {
-        if(poiItem != null){
-            LocateLogic.getIns(this).selectedPoiCallback(poiItem);
-        }
-
-        finish();
-    }
-
-    @Override
-    protected void setBack() {
-
-    }
-
 
     /**
      * 地图加载完成
@@ -158,21 +158,28 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
     public void onMapLoaded() {
 
         setCenterMaker(null,0,primaryUrl);  //为了加载图标,必须在这里加载,否则加载不出来
-        gdpresenter.singleLocate(radius);
+        gdpresenter.requestLocationPermission(new PermisionUtil.RequestPermisionResult() {
+            @Override
+            public void onRequestPermissionSuccess() {
+                gdpresenter.singleLocate(radius);
+            }
+
+            @Override
+            public void onRequestPermissionFailure(List<String> permissions) {
+
+            }
+
+            @Override
+            public void onRequestPermissionFailureNeverAsk(List<String> permissions) {
+                GdmapActivity.this.finish();
+            }
+        });
+
         LogUtil.getIns("定位").i("地图加载完成");
 
 
     }
 
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
 
     @Override
     public void notifyChanged(List<PoiItem> poiItems) {
@@ -222,6 +229,17 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
                 .radius(radius).strokeColor(Const.STROKE_COLOR)
                 .fillColor(Const.FILL_COLOR).strokeWidth(Const.STROKE_WIDTH));
         boundsBuilder.include(lat);
+    }
+
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
     }
 
     /**
@@ -304,4 +322,21 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
         }
 
     }
+
+    //取消
+
+    protected void setCancle() {
+        finish();
+    }
+
+
+    //设置
+    protected void setSure() {
+        if(poiItem != null){
+            LocateLogic.getIns(this).selectedPoiCallback(poiItem);
+        }
+
+        finish();
+    }
+
 }
