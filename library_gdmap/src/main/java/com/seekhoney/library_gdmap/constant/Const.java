@@ -50,10 +50,21 @@ public class Const {
 	 * */
 	public static final int LOAD_IMG = 2;
 
+	/**
+	 * 权限备用
+	 * */
 	public static final int READ_CONTACTS = 0xE9;
 	public static final int GET_LOCATIONS = 0xE7;
 	public static final int READ_STORAGE = 0xE8;
 
+	/**
+	 * sharePreference用
+	 * */
 	public static final String SP_SELECT = "SP_SELECT";
+	public static final String KEY_HISTORY = "history";
+
+
+	public static final int REQUEST_CODE = 3;
+	public static final int RESPONSE_CODE = 4;
 
 }

@@ -23,12 +23,17 @@ import com.seekhoney.library_gdmap.component.DaggerCommonComponent;
 import com.seekhoney.library_gdmap.constant.Const;
 import com.seekhoney.library_gdmap.listener.OnImgLoadFinish;
 import com.seekhoney.library_gdmap.logic.LocateLogic;
+import com.seekhoney.library_gdmap.model.PoiIEntity;
 import com.seekhoney.library_gdmap.module.CommonModule;
 import com.seekhoney.library_gdmap.mvp.ILocateView;
+import com.seekhoney.library_gdmap.presenter.Gdpresenter;
 import com.seekhoney.library_gdmap.utils.LogUtil;
 import com.seekhoney.library_gdmap.utils.PermisionUtil;
 import com.seekhoney.library_gdmap.utils.Utils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -54,11 +59,15 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
     ListView listView;
     @BindView(R2.id.rlt_jump)
     RelativeLayout rlt_jump;
+    @BindView(R2.id.tv_search)
+    TextView tvSearch; //搜索框文字
 
     @Inject
     RxPermissions rxPermissions;
     @Inject
     LatLngBounds.Builder boundsBuilder; // 当前的坐标点集合，主要用于进行地图的可视区域的缩放
+    @Inject
+    protected Gdpresenter gdpresenter;
 
 
 
@@ -85,7 +94,43 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
                 inject(this);   //Activity中的Inject标记的对象被赋值
         init(savedInstanceState);
         intData();
+        EventBus.getDefault().register(this);
     }
+
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mMapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Utils.removeMarkers();
+        mMapView.onDestroy();
+        EventBus.getDefault().unregister(this);
+        gdpresenter = null;
+    }
+
+    @Override
+    public int getContentView() {
+        return R.layout.activity_admin;
+    }
+
 
     @OnClick({R2.id.cancle_gdmap_sdk,R2.id.right_gdmap_sdk,R2.id.llt_back,R2.id.llt_relocate,R2.id.rlt_jump})
     public void onViewClick(View v){
@@ -116,44 +161,23 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
             });
 
         }else if(id == R.id.rlt_jump){
+            Intent intent = new Intent(this, SelectActivity.class);
+            startActivity(intent);
 
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mMapView.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mMapView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mMapView.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Utils.removeMarkers();
-        mMapView.onDestroy();
-    }
-
-    @Override
-    public int getContentView() {
-        return R.layout.activity_admin;
+    @Subscribe (threadMode = ThreadMode.MAIN)
+    public void getSelectData(PoiIEntity entity){
+        if(entity != null){
+            tvSearch.setText(entity.getTitle());
+            LatLng temp = new LatLng(entity.getLatlng(),entity.getLonglng());
+            gdpresenter.moveCamera(temp);
+            gdpresenter.Regeocode(temp);
+        }
     }
 
 
-    /**
-     * 地图加载完成
-     */
     @Override
     public void onMapLoaded() {
 
@@ -338,5 +362,8 @@ public class GdmapActivity extends GdBaseActivity implements AMap.OnMapLoadedLis
 
         finish();
     }
+
+
+
 
 }

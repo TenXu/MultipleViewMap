@@ -1,16 +1,24 @@
 package com.seekhoney.library_gdmap.model;
 
-import com.amap.api.services.core.LatLonPoint;
+import java.io.Serializable;
 
 /**
  * Created by ryan on 17/6/6.
  */
 
-public class PoiIEntity
+public class PoiIEntity implements Serializable
 {
     private String title;
     private String address;
-    private LatLonPoint latLonPoint;
+    private double latlng;
+    private double longlng;
+
+    public PoiIEntity(String title, String address, double latlng, double longlng) {
+        this.title = title;
+        this.address = address;
+        this.latlng = latlng;
+        this.longlng = longlng;
+    }
 
     public String getTitle() {
         return title;
@@ -28,11 +36,22 @@ public class PoiIEntity
         this.address = address;
     }
 
-    public LatLonPoint getLatLonPoint() {
-        return latLonPoint;
+    public double getLatlng() {
+        return latlng;
     }
 
-    public void setLatLonPoint(LatLonPoint latLonPoint) {
-        this.latLonPoint = latLonPoint;
+    public void setLatlng(double latlng) {
+        this.latlng = latlng;
     }
+
+    public double getLonglng() {
+        return longlng;
+    }
+
+    public void setLonglng(double longlng) {
+        this.longlng = longlng;
+    }
+
+
+
 }

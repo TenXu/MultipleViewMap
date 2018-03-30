@@ -16,6 +16,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_map_view">
 
+            <com.amap.api.maps.MapView
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+            </com.amap.api.maps.MapView>
             <RelativeLayout
                     android:id="@+id/rlt_jump"
                     android:background="@drawable/shadow_map_yxtsdk"
@@ -45,12 +50,6 @@
 
             </RelativeLayout>
 
-            <com.amap.api.maps.MapView
-                    android:id="@+id/map"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-            </com.amap.api.maps.MapView>
-
             <LinearLayout
                     android:id="@+id/llt_relocate"
                     android:layout_width="@dimen/width_relocate"
@@ -64,7 +63,6 @@
                     android:gravity="center"
                     android:orientation="horizontal">
                 <LinearLayout
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 

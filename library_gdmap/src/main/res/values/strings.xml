@@ -31,4 +31,5 @@
     <string name="no_location">经纬度不可为空</string>
     <string name="no_location_app">未检测到导航应用</string>
     <string name="target_name">目的地</string>
+    <string name="no_record">暂无历史记录暂无历史记录暂无历史记录暂无历史记录</string>
 </resources>

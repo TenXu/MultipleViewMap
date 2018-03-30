@@ -14,7 +14,6 @@
         </activity>
 
 
-
         <activity
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"
                 android:screenOrientation="portrait"
@@ -25,6 +24,11 @@
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
                   android:screenOrientation="portrait"
         >
+
+        </activity>
+        <activity android:name=".ui.SelectActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                  android:screenOrientation="portrait">
 
         </activity>
 

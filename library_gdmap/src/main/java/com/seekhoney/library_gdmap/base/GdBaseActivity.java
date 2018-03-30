@@ -7,9 +7,6 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import com.seekhoney.library_gdmap.R;
 import com.seekhoney.library_gdmap.logic.LocateLogic;
-import com.seekhoney.library_gdmap.presenter.Gdpresenter;
-
-import javax.inject.Inject;
 
 /**
  * Created by ryan on 17/6/6.
@@ -17,10 +14,6 @@ import javax.inject.Inject;
 
 public abstract class GdBaseActivity extends AppCompatActivity
 {
-
-    @Inject
-    protected Gdpresenter gdpresenter;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

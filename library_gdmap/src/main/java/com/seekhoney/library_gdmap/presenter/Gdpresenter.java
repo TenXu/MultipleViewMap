@@ -171,7 +171,8 @@ public class Gdpresenter implements AMapLocationListener , GeocodeSearch.OnGeoco
                         public void onNext(PositionEntity positionEntity) {
                             if(positionEntity != null && view.getMapView() != null){
                                 currentLocation = new LatLng(positionEntity.latitue, positionEntity.longitude);
-                                Regeocode ();
+                                moveCamera(currentLocation);
+                                Regeocode (currentLocation);
                             }
 
                         }
@@ -196,7 +197,7 @@ public class Gdpresenter implements AMapLocationListener , GeocodeSearch.OnGeoco
     public void onCameraChangeFinish(CameraPosition cameraPosition) { //地图移动完成回调
         currentLocation = cameraPosition.target;
         addRoundFence();
-        Regeocode ();
+        Regeocode (currentLocation);
     }
 
     @Override
@@ -273,15 +274,21 @@ public class Gdpresenter implements AMapLocationListener , GeocodeSearch.OnGeoco
     }
 
     /**逆地理编码*/
-    private void  Regeocode (){
-        AMap aMap = view.getMapView().getMap();
-        CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(
-                currentLocation, aMap.getCameraPosition().zoom);
-        aMap.animateCamera(cameraUpate); //动画的方式更新地图状态
+    public void  Regeocode (LatLng latLng){
         RegeocodeQuery regecodeQuery = new RegeocodeQuery(new LatLonPoint(
-                currentLocation.latitude, currentLocation.longitude), radius, GeocodeSearch.AMAP);
+                latLng.latitude, latLng.longitude), radius, GeocodeSearch.AMAP);
         mGeocodeSearch.getFromLocationAsyn(regecodeQuery);
     }
+
+    /**移动地图指针*/
+    public void moveCamera(LatLng latLng){
+        AMap aMap = view.getMapView().getMap();
+        CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(
+                latLng, aMap.getCameraPosition().zoom);
+        aMap.animateCamera(cameraUpate); //动画的方式更新地图状态
+
+    }
+
 
 
     /**
